@@ -1,0 +1,35 @@
+### iOSab build canny lines
+builds a branch named iOSab-canny+lines which contains a merged build of the two branches
+
+# git diff --name-status canny..lines
+
+Outputs modified/added/deleted files
+	M       CardCV.xcodeproj/project.pbxproj
+	M       CardCV/SVViewController.h
+	M       CardCV/SVViewController.mm
+	A       CardCV/UIImage+OpenCV.h
+	A       CardCV/UIImage+OpenCV.mm
+	M       CardCV/en.lproj/MainStoryboard.storyboard
+
+Optionally replace main AppDelegate with one that provides a UI to choose which version to use 
+
+All files from both branches are added to one new branch eg: canny-lines
+Can ignore *.pbxproj
+Modified classes get specified to branch eg SVViewController->canny_SVViewController
+Differing categories have to have overlapping methods be renamed, and each class using those methods must specify which one they were using
+Added/Deleted categories can be ignored
+Modified xibs must be specified to the project ala classes
+Modified storyboards must be specified and the AppDelegate must choose which storyboard to use (also set storyboard in plist to be blank)
+
+For overlapping classes:
+	rename each eg: SVViewController
+	canny_SVViewController
+	lines_SVViewController
+	create a container proxy SVViewController which chooses which implementation to use depending on the test
+
+Add all newly created files to xcodeproj
+
+Next steps:
+	Pull in second branch
+	Replace ABViewController with chooser
+	Create a diff file to add renamed versions of ABViewController to xcodeproj
